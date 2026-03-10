@@ -1,31 +1,29 @@
 from aiogram import Router
 from aiogram.types import Message
 from app.config import ADMIN_IDS
-import aiosqlite
+from app.services.export_service import export_users
 
 router = Router()
 
-DB = "aloofest.db"
 
-
-@router.message(lambda msg: msg.from_user.id in ADMIN_IDS)
+@router.message(lambda m: m.from_user.id in ADMIN_IDS)
 async def admin_panel(message: Message):
 
     if message.text == "/admin":
 
-        async with aiosqlite.connect(DB) as db:
+        await message.answer("""
+⚙ ADMIN PANEL
 
-            cursor = await db.execute("SELECT COUNT(*) FROM users")
-
-            users = await cursor.fetchone()
-
-        await message.answer(
-            f"""
-⚙️ Admin Panel
-
-👥 Foydalanuvchilar: {users[0]}
-
-Buyruqlar:
 /users
-"""
-        )
+/broadcast
+/export
+/random
+""")
+
+
+@router.message(lambda m: m.text == "/export")
+async def export(message: Message):
+
+    file = await export_users()
+
+    await message.answer_document(open(file,"rb"))
