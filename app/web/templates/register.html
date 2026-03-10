@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Aloofest Registration</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+}
+
+.container{
+width:400px;
+margin:auto;
+margin-top:100px;
+background:white;
+padding:30px;
+border-radius:10px;
+}
+
+select,input{
+width:100%;
+padding:10px;
+margin-top:10px;
+}
+
+button{
+margin-top:15px;
+padding:10px;
+width:100%;
+background:#2A7FFF;
+color:white;
+border:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Aloofest Ro'yxatdan o'tish</h2>
+
+<form action="/register" method="post">
+
+<input name="telegram_id" hidden>
+
+<input name="name" placeholder="Ismingiz">
+
+<input name="instagram" placeholder="Instagram username">
+
+<select id="region" name="region"></select>
+
+<select id="district" name="district"></select>
+
+<button type="submit">
+Ro'yxatdan o'tish
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+const data = {
+"Toshkent":[
+"Chilonzor",
+"Yunusobod",
+"Olmazor"
+],
+
+"Fargona":[
+"Qo'qon",
+"Margilon",
+"Fargona"
+]
+}
+
+const region = document.getElementById("region")
+const district = document.getElementById("district")
+
+for(let r in data){
+region.innerHTML += `<option>${r}</option>`
+}
+
+region.onchange = function(){
+
+district.innerHTML = ""
+
+data[this.value].forEach(d=>{
+district.innerHTML += `<option>${d}</option>`
+})
+
+}
+
+region.onchange()
+
+</script>
+
+</body>
+</html>
