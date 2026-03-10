@@ -4,21 +4,15 @@ from app.database.db import DB
 
 async def broadcast(bot, text):
 
-    success = 0
-    failed = 0
-
     async with aiosqlite.connect(DB) as db:
 
-        cursor = await db.execute("SELECT telegram_id FROM users")
+        cur = await db.execute("SELECT telegram_id FROM users")
 
-        users = await cursor.fetchall()
+        users = await cur.fetchall()
 
-        for user in users:
+        for u in users:
 
             try:
-                await bot.send_message(user[0], text)
-                success += 1
+                await bot.send_message(u[0], text)
             except:
-                failed += 1
-
-    return success, failed
+                pass
