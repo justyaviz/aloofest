@@ -10,6 +10,7 @@ from app.handlers.menu import router as menu_router
 from app.handlers.support import router as support_router
 from app.handlers.referral import router as referral_router
 from app.handlers.admin import router as admin_router
+
 from app.web.server import start_web_server
 
 
@@ -30,7 +31,10 @@ async def main():
 
     await init_db()
 
+    # WEB SERVER START
     await start_web_server()
+
+    print("WEB SERVER STARTED")
 
     await dp.start_polling(bot)
 
