@@ -1,7 +1,6 @@
 from aiogram import Router
-from aiogram.types import Message
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import CommandStart
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 router = Router()
 
@@ -17,9 +16,16 @@ async def start(message: Message):
 1️⃣ TOP 3 ga kirish
 2️⃣ Random o'yini
 
+🥇 Tecno Spark GO 30C
+🥈 Mini pech Artel
+🥉 Ryugzak
+
+🎲 Random sovg‘alar:
+Airpods Max Copy (3 ta)
+
 📅 G'oliblar JONLI EFIR orqali aniqlanadi.
 
-Hammaga omad!
+1️⃣ Birinchi qadam: ISHTIROK ETAMAN
 """
 
     kb = InlineKeyboardMarkup(
@@ -27,7 +33,7 @@ Hammaga omad!
             [
                 InlineKeyboardButton(
                     text="🚀 ISHTIROK ETAMAN",
-                    callback_data="participate"
+                    callback_data="join_contest"
                 )
             ]
         ]
