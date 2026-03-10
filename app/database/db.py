@@ -2,15 +2,14 @@ import aiosqlite
 import os
 
 DB_DIR = "data"
-DB_PATH = f"{DB_DIR}/aloofest.db"
+DB = f"{DB_DIR}/aloofest.db"
 
 
 async def init_db():
 
-    # data papkasini yaratamiz
     os.makedirs(DB_DIR, exist_ok=True)
 
-    async with aiosqlite.connect(DB_PATH) as db:
+    async with aiosqlite.connect(DB) as db:
 
         await db.execute("""
         CREATE TABLE IF NOT EXISTS users(
