@@ -27,3 +27,10 @@ async def export(message: Message):
     file = await export_users()
 
     await message.answer_document(open(file,"rb"))
+
+@router.message(lambda m: m.text == "/random")
+async def random(message: Message):
+
+    user = await choose_random_winner()
+
+    await message.answer(f"Random winner ID: {user}")
