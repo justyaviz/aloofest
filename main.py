@@ -5,13 +5,12 @@ from aiogram.client.default import DefaultBotProperties
 
 from app.config import BOT_TOKEN
 from app.database.db import init_db
-from app.handlers.start import router as start_router
-from app.handlers.menu import router as menu_router
-from app.handlers.support import router as support_router
-from app.handlers.referral import router as referral_router
-from app.handlers.admin import router as admin_router
+from app.web.server import start_web
 
-from app.web.server import start_web_server
+from app.handlers.start import router as start_router
+from app.handlers.user import router as user_router
+from app.handlers.admin import router as admin_router
+from app.handlers.support import router as support_router
 
 
 async def main():
@@ -24,17 +23,13 @@ async def main():
     dp = Dispatcher()
 
     dp.include_router(start_router)
-    dp.include_router(menu_router)
-    dp.include_router(referral_router)
-    dp.include_router(support_router)
+    dp.include_router(user_router)
     dp.include_router(admin_router)
+    dp.include_router(support_router)
 
     await init_db()
 
-    # web serverni background task sifatida ishga tushiramiz
-    asyncio.create_task(start_web_server())
-
-    print("WEB SERVER STARTED")
+    asyncio.create_task(start_web())
 
     await dp.start_polling(bot)
 
