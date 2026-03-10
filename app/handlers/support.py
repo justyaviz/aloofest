@@ -7,9 +7,7 @@ router = Router()
 support_users = {}
 
 exit_kb = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="❌ Yakunlash")]
-    ],
+    keyboard=[[KeyboardButton(text="❌ Yakunlash")]],
     resize_keyboard=True
 )
 
@@ -22,24 +20,14 @@ async def support_start(message: Message):
     await message.answer(
         """📞 Bog‘lanish
 
-Iltimos, savolingizni yuboring.
-Xabaringiz adminlarga jo‘natiladi.
-
-Chiqish uchun ❌ Yakunlash tugmasini bosing.""",
+Savolingizni yozing.
+Adminlarga yuboriladi.""",
         reply_markup=exit_kb
     )
 
 
-@router.message(F.text == "❌ Yakunlash")
-async def support_stop(message: Message):
-
-    support_users.pop(message.from_user.id, None)
-
-    await message.answer("Muloqot yakunlandi.")
-
-
 @router.message()
-async def support_messages(message: Message):
+async def support_forward(message: Message):
 
     if message.from_user.id not in support_users:
         return
@@ -54,11 +42,8 @@ async def support_messages(message: Message):
 👤 {message.from_user.full_name}
 🆔 {message.from_user.id}
 
-📝 Savol:
 {message.text}
 """
         )
 
-    await message.answer(
-        "✅ Xabaringiz yuborildi. Admin javobini kuting."
-    )
+    await message.answer("✅ Xabar yuborildi")
