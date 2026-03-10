@@ -1,0 +1,19 @@
+<h1>Aloofest Admin Dashboard</h1>
+
+<div>
+
+Total users: {{users}}
+
+</div>
+
+<div>
+
+Top 10
+
+{% for u in top %}
+
+<p>{{u.name}} - {{u.points}}</p>
+
+{% endfor %}
+
+</div>
