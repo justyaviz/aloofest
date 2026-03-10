@@ -1,5 +1,5 @@
-import aiosqlite
 import openpyxl
+import aiosqlite
 from app.database.db import DB
 
 
@@ -12,18 +12,17 @@ async def export_users():
 
     async with aiosqlite.connect(DB) as db:
 
-        cursor = await db.execute("""
-        SELECT name, fest_id, points, referrals_count
-        FROM users
+        cur = await db.execute("""
+        SELECT name,fest_id,points,referrals_count FROM users
         """)
 
-        rows = await cursor.fetchall()
+        rows = await cur.fetchall()
 
         for r in rows:
             ws.append(r)
 
-    path = "exports/users.xlsx"
+    file = "users.xlsx"
 
-    wb.save(path)
+    wb.save(file)
 
-    return path
+    return file
