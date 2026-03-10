@@ -40,3 +40,41 @@ Airpods Max Copy (3 ta)
     )
 
     await message.answer(text, reply_markup=kb)
+
+from aiogram.types import CallbackQuery
+from app.keyboards.user import menu
+
+
+@router.callback_query(lambda c: c.data == "join_contest")
+async def join_contest(callback: CallbackQuery):
+
+    text = """
+🏆 <b>aloofest konkurs tizimi</b>
+
+🎯 Ball tizimi
+
+1 ta do‘st taklif qilish = <b>5 ball</b>
+
+🎲 Random o‘yini
+
+Kamida <b>3 ta do‘st</b> taklif qilish kerak.
+
+3 referal = 15 ball
+
+🥇 TOP konkurs
+
+Eng ko‘p ball yig‘ganlar yutadi.
+
+📋 Shartlar
+
+1️⃣ @aloo_uzb kanaliga obuna bo‘lish
+
+2️⃣ Instagram:
+@aloo.uz_ sahifasiga obuna
+
+🌐 Ro‘yxatdan o‘tish WEB orqali amalga oshiriladi.
+"""
+
+    await callback.message.answer(text, reply_markup=menu)
+
+    await callback.answer()
