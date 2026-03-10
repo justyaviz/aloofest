@@ -1,7 +1,5 @@
 from aiogram import Router
-from aiogram.types import Message
-from aiogram.filters import Text
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 router = Router()
 
@@ -27,19 +25,17 @@ menu = ReplyKeyboardMarkup(
 )
 
 
-@router.message(Text("📘 Qo‘llanma"))
-async def help_menu(message: Message):
+@router.message()
+async def menu_handler(message: Message):
 
-    text = """
-📘 <b>Qo‘llanma</b>
+    if message.text == "📘 Qo‘llanma":
+
+        await message.answer("""
+📘 Qo‘llanma
 
 1 do‘st = 5 ball
 
-3 do‘st taklif qilsangiz
-random o‘yinga tushasiz.
+3 do‘st taklif qilsangiz randomga tushasiz.
 
-Eng ko‘p ball yig‘ganlar
-TOP g‘olib bo‘lishi mumkin.
-"""
-
-    await message.answer(text)
+Eng ko‘p ball yig‘ganlar TOP g‘olib bo‘ladi.
+""")
