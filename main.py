@@ -31,8 +31,8 @@ async def main():
 
     await init_db()
 
-    # WEB SERVER START
-    await start_web_server()
+    # web serverni background task sifatida ishga tushiramiz
+    asyncio.create_task(start_web_server())
 
     print("WEB SERVER STARTED")
 
