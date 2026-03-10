@@ -1,18 +1,16 @@
 from aiohttp import web
 import os
 
-PORT = int(os.environ.get("PORT",8080))
+from app.web.routes import setup_routes
 
-
-async def health(request):
-    return web.Response(text="OK")
+PORT = int(os.getenv("PORT",8080))
 
 
 async def start_web():
 
     app = web.Application()
 
-    app.router.add_get("/health", health)
+    setup_routes(app)
 
     runner = web.AppRunner(app)
     await runner.setup()
