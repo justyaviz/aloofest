@@ -15,7 +15,6 @@ async def init_db():
         CREATE TABLE IF NOT EXISTS users(
         telegram_id INTEGER PRIMARY KEY,
         name TEXT,
-        username TEXT,
         instagram TEXT,
         region TEXT,
         district TEXT,
@@ -23,8 +22,7 @@ async def init_db():
         referrer_id INTEGER,
         referrals_count INTEGER DEFAULT 0,
         points INTEGER DEFAULT 0,
-        is_registered INTEGER DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        registered INTEGER DEFAULT 0
         )
         """)
 
