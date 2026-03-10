@@ -1,27 +1,15 @@
 import aiosqlite
+from .models import USERS_TABLE, WINNERS_TABLE, BROADCAST_TABLE
 
-DB = "aloofest.db"
+DB = "data/aloofest.db"
 
 
 async def init_db():
 
     async with aiosqlite.connect(DB) as db:
 
-        await db.execute("""
-        CREATE TABLE IF NOT EXISTS users(
-        telegram_id INTEGER PRIMARY KEY,
-        name TEXT,
-        username TEXT,
-        instagram TEXT,
-        region TEXT,
-        district TEXT,
-        fest_id TEXT,
-        referrer_id INTEGER,
-        referrals_count INTEGER DEFAULT 0,
-        points INTEGER DEFAULT 0,
-        is_registered INTEGER DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-        """)
+        await db.execute(USERS_TABLE)
+        await db.execute(WINNERS_TABLE)
+        await db.execute(BROADCAST_TABLE)
 
         await db.commit()
