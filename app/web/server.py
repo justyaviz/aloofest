@@ -1,4 +1,5 @@
 from aiohttp import web
+from app.web.routes import register
 from app.config import PORT
 
 
@@ -10,11 +11,13 @@ async def start_web_server():
 
     app = web.Application()
 
+    app.router.add_post("/register", register)
     app.router.add_get("/health", health)
 
     runner = web.AppRunner(app)
+
     await runner.setup()
 
-    site = web.TCPSite(runner, "0.0.0.0", PORT)
+    site = web.TCPSite(runner,"0.0.0.0",PORT)
 
     await site.start()
