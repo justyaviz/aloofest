@@ -1,40 +1,33 @@
-USERS_TABLE = """
-CREATE TABLE IF NOT EXISTS users (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-telegram_id INTEGER UNIQUE,
-name TEXT,
-username TEXT,
-instagram TEXT,
-region TEXT,
-district TEXT,
-fest_id TEXT,
-referrer_id INTEGER,
-referrals_count INTEGER DEFAULT 0,
-points INTEGER DEFAULT 0,
-is_registered INTEGER DEFAULT 0,
-is_subscribed INTEGER DEFAULT 0,
-is_blocked INTEGER DEFAULT 0,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-"""
+DISTRICTS = {
+    "Toshkent shahri": ["Bektemir", "Chilonzor", "Mirobod", "Mirzo Ulug‘bek", "Olmazor", "Sergeli", "Shayxontohur", "Uchtepa", "Yakkasaroy", "Yashnobod", "Yunusobod"],
+    "Toshkent viloyati": ["Angren", "Bekobod shahri", "Bo‘ka", "Bo‘stonliq", "Chinoz", "Chirchiq", "Gazalkent", "Nurafshon", "Ohangaron shahri", "Ohangaron tumani", "Olmaliq", "Oqqo‘rg‘on", "Parkent", "Piskent", "Qibray", "Quyichirchiq", "Yangiyo‘l shahri", "Yangiyo‘l tumani", "Yuqorichirchiq", "Zangiota"],
+    "Andijon viloyati": ["Andijon shahri", "Asaka", "Baliqchi", "Bo‘ston", "Buloqboshi", "Izboskan", "Jalaquduq", "Xo‘jaobod", "Marhamat", "Oltinko‘l", "Paxtaobod", "Qo‘rg‘ontepa", "Shahrixon", "Ulug‘nor", "Xonobod"],
+    "Farg‘ona viloyati": ["Farg‘ona shahri", "Qo‘qon", "Marg‘ilon", "Quvasoy", "Oltiariq", "Bag‘dod", "Beshariq", "Buvayda", "Dang‘ara", "Farg‘ona tumani", "Furqat", "Qo‘shtepa", "Quva", "Rishton", "So‘x", "Toshloq", "Uchko‘prik", "Yozyovon"],
+    "Namangan viloyati": ["Namangan shahri", "Chortoq", "Chust", "Kosonsoy", "Mingbuloq", "Namangan tumani", "Norin", "Pop", "To‘raqo‘rg‘on", "Uchqo‘rg‘on", "Uychi", "Yangiqo‘rg‘on"],
+    "Samarqand viloyati": ["Samarqand shahri", "Kattaqo‘rg‘on shahri", "Bulung‘ur", "Ishtixon", "Jomboy", "Kattaqo‘rg‘on tumani", "Narpay", "Nurobod", "Oqdaryo", "Paxtachi", "Pastdarg‘om", "Payariq", "Qo‘shrabot", "Samarqand tumani", "Toyloq", "Urgut"],
+    "Buxoro viloyati": ["Buxoro shahri", "Kogon shahri", "Buxoro tumani", "G‘ijduvon", "Jondor", "Kogon tumani", "Olot", "Peshku", "Qorako‘l", "Qorovulbozor", "Romitan", "Shofirkon", "Vobkent"],
+    "Xorazm viloyati": ["Urganch shahri", "Xiva shahri", "Bog‘ot", "Gurlan", "Hazorasp", "Xiva tumani", "Xonqa", "Qo‘shko‘pir", "Shovot", "Urganch tumani", "Yangiariq", "Yangibozor", "Tuproqqal’a"],
+    "Qashqadaryo viloyati": ["Qarshi shahri", "Shahrisabz shahri", "Chiroqchi", "Dehqonobod", "G‘uzor", "Kasbi", "Kitob", "Koson", "Ko‘kdala", "Muborak", "Nishon", "Qamashi", "Qarshi tumani", "Shahrisabz tumani", "Yakkabog‘"],
+    "Surxondaryo viloyati": ["Termiz shahri", "Angor", "Bandixon", "Boysun", "Denov", "Jarqo‘rg‘on", "Muzrabot", "Oltinsoy", "Qiziriq", "Qumqo‘rg‘on", "Sariosiyo", "Sherobod", "Sho‘rchi", "Termiz tumani", "Uzun"],
+    "Navoiy viloyati": ["Navoiy shahri", "Zarafshon", "G‘ozg‘on", "Karmana", "Konimex", "Navbahor", "Nurota", "Qiziltepa", "Tomdi", "Uchquduq", "Xatirchi"],
+    "Jizzax viloyati": ["Jizzax shahri", "Arnasoy", "Baxmal", "Do‘stlik", "Forish", "G‘allaorol", "Jizzax tumani", "Mirzacho‘l", "Paxtakor", "Yangiobod", "Zafarobod", "Zarbdor", "Zomin"],
+    "Sirdaryo viloyati": ["Guliston shahri", "Shirin", "Yangiyer", "Boyovut", "Guliston tumani", "Mirzaobod", "Oqoltin", "Sardoba", "Sayxunobod", "Sirdaryo tumani", "Xovos"],
+    "Qoraqalpog‘iston Respublikasi": ["Nukus shahri", "Amudaryo", "Beruniy", "Bo‘zatov", "Chimboy", "Ellikqal’a", "Kegeyli", "Mo‘ynoq", "Nukus tumani", "Qanliko‘l", "Qo‘ng‘irot", "Qorao‘zak", "Shumanay", "Taxtako‘pir", "To‘rtko‘l", "Xo‘jayli"],
+}
 
-WINNERS_TABLE = """
-CREATE TABLE IF NOT EXISTS winners(
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-user_id INTEGER,
-winner_type TEXT,
-prize TEXT,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-"""
-
-BROADCAST_TABLE = """
-CREATE TABLE IF NOT EXISTS broadcasts(
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-text TEXT,
-total INTEGER,
-success INTEGER,
-failed INTEGER,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-"""
+PROMO_CODES = {
+    "2101": "ANGREN",
+    "2102": "OHANGARON",
+    "2103": "OLMALIQ",
+    "2104": "QIBRAY",
+    "2105": "CHIRCHIQ",
+    "2106": "GAZALKENT",
+    "2107": "PISKENT",
+    "2108": "CHINOZ",
+    "2109": "OQQO‘RG‘ON",
+    "2110": "PARKENT",
+    "3101": "SHO‘RCHI",
+    "3102": "JARQO‘RG‘ON",
+    "3103": "SHEROBOD",
+    "4101": "GULISTON",
+}
