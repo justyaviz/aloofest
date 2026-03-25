@@ -35,9 +35,9 @@ Ishtirok tartibi:
 • 25+ ball yig‘ish
 
 💎 Ball tizimi:
-• Ro‘yxatdan o‘tish: +5
-• 1 do‘st taklif qilish: +5
-• Promokod: +15
+• Ro‘yxatdan o‘tish: +5 ball
+• 1 do‘st taklif qilish: +5 ball
+• Promokod: +15 ball
 
 Agar do‘kondan promokod olsangiz, sizga +15 ball tushadi.
 Shunda yana 2 ta do‘st taklif qilsangiz, randomga kirishingiz osonlashadi.
