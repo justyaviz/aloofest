@@ -24,5 +24,17 @@ PROMO_BONUS = int(os.getenv("PROMO_BONUS", "15"))
 
 REFERRAL_IMAGE_FILE_ID = os.getenv("REFERRAL_IMAGE_FILE_ID", "").strip()
 
+BASE_URL = os.getenv("BASE_URL", "").rstrip("/")
+WEBAPP_SECRET = os.getenv("WEBAPP_SECRET", "super-secret-key").strip()
+BOT_URL = f"https://t.me/{BOT_USERNAME}" if BOT_USERNAME else ""
+
+PORT = int(os.getenv("PORT", "8080"))
+
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN topilmadi")
+
+if not BOT_USERNAME:
+    raise RuntimeError("BOT_USERNAME topilmadi")
+
+if not BASE_URL:
+    raise RuntimeError("BASE_URL topilmadi")
