@@ -15,16 +15,16 @@ Siz “aloofest” mega konkursida muvaffaqiyatli ro‘yxatdan o‘tdingiz va bo
 quyidagi qisqa yo‘riqnoma orqali konkursda qanday qatnashish, ball yig‘ish va g‘olib bo‘lish tartibini ko‘rib chiqing.
 
 🎯 Sizda 2 xil imkoniyat bor:
-• TOP 3 mega konkursda g‘olib bo‘lish
 • Haftalik random o‘yinlarida sovg‘a yutish
+• Do‘st taklif qilib ehtimolni oshirish
 
 📹 Qisqa yo‘riqnoma:
 • konkursda qanday ishtirok etish
 • do‘st taklif qilib ball yig‘ish
-• TOP 3 ga chiqish
 • haftalik random o‘yinida qatnashish
+• promokod orqali +15 ball olish
 
-👥 Endi do‘stlaringizni taklif qiling, ko‘proq ball yig‘ing va hayit oldidan “aloo”dan qimmatbaho sovg‘alarni yutib oling!
+👥 Endi do‘stlaringizni taklif qiling, ko‘proq ball yig‘ing va “aloo”dan qimmatbaho sovg‘alarni yutib oling!
 
 👇 Quyidagi menyular orqali davom eting
 """
@@ -40,14 +40,14 @@ async def open_main_menu(call: CallbackQuery):
 
     if not user["phone_verified"]:
         await call.message.answer(
-            "📱 Telefon raqamingizni ulashing.",
+            f"📱 {user['full_name']}, endi telefon raqamingizni ulashing.",
             reply_markup=phone_keyboard()
         )
-        await call.answer()
+        await call.answer("Raqamni ulashing")
         return
 
     await call.message.answer(GUIDE_TEXT, reply_markup=main_menu())
-    await call.answer()
+    await call.answer("Menyu ochildi")
 
 
 @router.message(F.contact)
@@ -58,4 +58,11 @@ async def save_contact(message: Message):
         return
 
     await db.save_phone(message.from_user.id, message.contact.phone_number)
+
+    await message.answer(
+        f"🎉 <b>Tabriklaymiz, {user['full_name']}!</b>\n\n"
+        f"Telefon raqamingiz muvaffaqiyatli qabul qilindi.",
+        reply_markup=main_menu()
+    )
+
     await message.answer(GUIDE_TEXT, reply_markup=main_menu())
