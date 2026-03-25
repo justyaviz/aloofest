@@ -1,49 +1,33 @@
-from aiogram import Router, F
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
+from aiogram import Router
+from aiogram.types import Message
+
 from app.config import ADMIN_IDS
+from app.database.db import db
 
 router = Router()
 
-support_users = {}
 
-exit_kb = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="❌ Yakunlash")]],
-    resize_keyboard=True
-)
-
-
-@router.message(F.text == "📞 Bog‘lanish")
-async def support_start(message: Message):
-
-    support_users[message.from_user.id] = True
-
-    await message.answer(
-        """📞 Bog‘lanish
-
-Savolingizni yozing.
-Adminlarga yuboriladi.""",
-        reply_markup=exit_kb
-    )
+@router.message(lambda m: m.text == "🆘 Yordam")
+async def help_menu(message: Message):
+    await message.answer("Savolingizni yozib yuboring. Adminlar javob beradi.")
 
 
 @router.message()
-async def support_forward(message: Message):
-
-    if message.from_user.id not in support_users:
+async def support_fallback(message: Message):
+    user = await db.get_user(message.from_user.id)
+    if not user or not user["registered"]:
         return
 
-    for admin in ADMIN_IDS:
+    text = (
+        f"🆘 Yangi murojaat\n\n"
+        f"👤 {user['full_name'] or user['tg_name']}\n"
+        f"🆔 {message.from_user.id}\n"
+        f"📨 {message.text}"
+    )
+    for admin_id in ADMIN_IDS:
+        try:
+            await message.bot.send_message(admin_id, text)
+        except Exception:
+            pass
 
-        await message.bot.send_message(
-            admin,
-            f"""
-📩 Yangi murojaat
-
-👤 {message.from_user.full_name}
-🆔 {message.from_user.id}
-
-{message.text}
-"""
-        )
-
-    await message.answer("✅ Xabar yuborildi")
+    await message.answer("✅ Xabaringiz yuborildi.")
