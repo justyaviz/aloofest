@@ -1,44 +1,32 @@
 from aiogram import Router
 from aiogram.types import Message
-import aiosqlite
-import random
+
+from app.config import REFERRAL_IMAGE_FILE_ID
+from app.database.db import db
 
 router = Router()
 
-DB = "aloofest.db"
 
+@router.message(lambda m: m.text == "👥 Do‘stlarni taklif qilish")
+async def referral_menu(message: Message):
+    user = await db.get_user(message.from_user.id)
+    if not user or not user["registered"]:
+        await message.answer("Avval ro‘yxatdan o‘ting.")
+        return
 
-def generate_fest():
+    me = await message.bot.get_me()
+    link = f"https://t.me/{me.username}?start=ref_{message.from_user.id}"
 
-    n = random.randint(1,999)
+    caption = (
+        "🔥 <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlari</b>\n\n"
+        "Do‘stlaringizni taklif qiling va sovg‘alarga yaqinlashing.\n\n"
+        "💎 Har 1 do‘st = +5 ball\n"
+        "🏬 Do‘kondan promokod = +15 ball\n\n"
+        "Promokod olsangiz, yana 2 ta do‘st taklif qilib randomga kirishingiz mumkin.\n\n"
+        f"🔗 Sizning shaxsiy linkingiz:\n{link}"
+    )
 
-    return f"FEST-{n:03d}"
-
-
-@router.message(lambda msg: msg.text == "💎 Mening ballarim")
-async def my_points(message: Message):
-
-    async with aiosqlite.connect(DB) as db:
-
-        cursor = await db.execute(
-            "SELECT name,fest_id,referrals_count,points FROM users WHERE telegram_id=?",
-            (message.from_user.id,)
-        )
-
-        row = await cursor.fetchone()
-
-        if not row:
-            await message.answer("Ro‘yxatdan o‘tmagansiz.")
-            return
-
-        name, fest, refs, pts = row
-
-        text = f"""
-👤 Ism: {name}
-🆔 ID: {fest}
-
-👥 Do‘stlar: {refs}
-💎 Ballar: {pts}
-"""
-
-        await message.answer(text)
+    if REFERRAL_IMAGE_FILE_ID:
+        await message.answer_photo(REFERRAL_IMAGE_FILE_ID, caption=caption)
+    else:
+        await message.answer(caption)
