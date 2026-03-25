@@ -14,6 +14,7 @@ from app.handlers.referral import router as referral_router
 from app.handlers.support import router as support_router
 from app.handlers.admin import router as admin_router
 from app.handlers.user import router as user_router
+from app.web.server import setup_web_server
 
 logging.basicConfig(
     level=logging.INFO,
@@ -37,6 +38,7 @@ async def main():
     dp.include_router(admin_router)
     dp.include_router(user_router)
 
+    await setup_web_server(bot)
     await dp.start_polling(bot)
 
 
