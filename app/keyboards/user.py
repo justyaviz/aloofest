@@ -31,22 +31,6 @@ def subscribe_keyboard(channel_username: str) -> InlineKeyboardMarkup:
     )
 
 
-def register_keyboard() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="🌐 RO‘YXATDAN O‘TISH", callback_data="fake_register_info")]
-        ]
-    )
-
-
-def after_registration_keyboard() -> InlineKeyboardMarkup:
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="🚀 BOSHLASH", callback_data="open_main_menu")]
-        ]
-    )
-
-
 def phone_keyboard() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
