@@ -12,35 +12,59 @@ from app.keyboards.user import start_keyboard, rules_keyboard, subscribe_keyboar
 router = Router()
 
 START_TEXT = """
-🎉 <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlariga start berildi!</b>
+🎉 <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlariga xush kelibsiz!</b>
 
-Asosiy sovg‘alar:
-📱 Telefon
-📟 Planshet
-🫖 Elektr choynak
-⌚ Smartwatch
-🎧 AirPods
-va boshqalar
+“aloo” sizlar uchun navbatdagi qiziqarli va yutuqlarga boy mavsumni boshlab berdi!  
+Bu safar o‘yin formati yanada sodda, yanada qiziqarli va yanada foydaliroq bo‘ladi. 🔥
 
-O‘yin har hafta <b>chorshanba kuni 14:00</b> jonli efirda bo‘ladi.
+🎁 <b>Bu mavsumdagi asosiy sovg‘alar:</b>
+📱 Telefon  
+📟 Planshet  
+🫖 Elektr choynak  
+⌚ Smartwatch  
+🎧 AirPods  
+va boshqa ko‘plab qimmatbaho sovg‘alar
+
+📅 <b>Random o‘yinlari har hafta chorshanba kuni soat 14:00 da</b> jonli efir orqali o‘tkaziladi.
+
+💙 Sizning vazifangiz juda oddiy:
+— kanalga obuna bo‘ling  
+— ro‘yxatdan o‘ting  
+— do‘stlaringizni taklif qiling  
+— ball yig‘ing  
+— random ishtirokchisiga aylaning
+
+🚀 Tayyormisiz? Unda hoziroq boshlaymiz!
 """
 
 RULES_TEXT = """
-🎲 <b>Bu galgi o‘yin faqat RANDOM formatda bo‘ladi</b>
+📋 <b>ALOOFEST 2-MAVSUM o‘yin qoidalari</b>
 
-Ishtirok tartibi:
-• Kanalga obuna bo‘lish
-• Ro‘yxatdan o‘tish
-• Do‘stlarni taklif qilish
-• 25+ ball yig‘ish
+Bu mavsumda o‘yin <b>faqat RANDOM formatda</b> bo‘ladi.  
+Demak, siz har hafta yangi imkoniyat bilan sovg‘a yutishingiz mumkin. 🎲
 
-💎 Ball tizimi:
-• Ro‘yxatdan o‘tish: +5 ball
-• 1 do‘st taklif qilish: +5 ball
-• Promokod: +15 ball
+💎 <b>Ball tizimi:</b>
+• Ro‘yxatdan o‘tish — <b>+5 ball</b>  
+• Har 1 ta do‘st taklif qilish — <b>+5 ball</b>  
+• Promokod kiritish — <b>+15 ball</b>
 
-Agar do‘kondan promokod olsangiz, sizga +15 ball tushadi.
-Shunda yana 2 ta do‘st taklif qilsangiz, randomga kirishingiz osonlashadi.
+🏬 <b>Promokod haqida:</b>
+Agar siz eng yaqin <b>aloo</b> do‘koniga borib promokod olsangiz, botga kiritganingizdan keyin sizga darhol <b>+15 ball</b> qo‘shiladi.
+
+Bu degani:
+agar promokod ishlatsangiz, yana atigi <b>2 ta do‘st</b> taklif qilib random o‘yinida qatnashish imkoniyatiga ega bo‘lasiz.
+
+✅ <b>Randomda qatnashish uchun:</b>
+Siz tanlangan haftada jami <b>25 ball yoki undan ko‘p</b> to‘plashingiz kerak.
+
+📅 <b>Muhim:</b>
+Random har hafta alohida hisoblanadi.  
+Masalan, bir haftada qatnashgan bo‘lsangiz, keyingi haftada yana qaytadan faol bo‘lishingiz kerak bo‘ladi.
+
+🎁 <b>Sovg‘alar:</b>
+Bu mavsumda siz telefon, planshet, smartwatch, AirPods, elektr choynak va boshqa ko‘plab sovg‘alarni yutishingiz mumkin.
+
+👇 Endi keyingi bosqichga o‘tish uchun kanalga obuna bo‘ling va tekshirish tugmasini bosing.
 """
 
 
@@ -68,7 +92,10 @@ async def start_cmd(message: Message):
 
     user = await db.get_user(message.from_user.id)
     if user and user["registered"]:
-        await message.answer("Siz allaqachon ro‘yxatdan o‘tgansiz.")
+        await message.answer(
+            "🎉 Siz allaqachon ro‘yxatdan o‘tgansiz.\n\n"
+            "Endi menyudan foydalanib o‘yindagi holatingizni kuzatishingiz mumkin."
+        )
         return
 
     await message.answer(START_TEXT, reply_markup=start_keyboard())
@@ -76,13 +103,19 @@ async def start_cmd(message: Message):
 
 @router.callback_query(F.data == "join_now")
 async def join_now(call: CallbackQuery):
-    await call.message.answer("Qoidalar bilan tanishing 👇", reply_markup=rules_keyboard())
+    await call.message.answer(
+        "🔥 Ajoyib! Unda birinchi navbatda o‘yin qoidalari bilan tanishib chiqing:",
+        reply_markup=rules_keyboard()
+    )
     await call.answer()
 
 
 @router.callback_query(F.data == "show_rules")
 async def show_rules(call: CallbackQuery):
-    await call.message.answer(RULES_TEXT, reply_markup=subscribe_keyboard(CHANNEL_USERNAME))
+    await call.message.answer(
+        RULES_TEXT,
+        reply_markup=subscribe_keyboard(CHANNEL_USERNAME)
+    )
     await call.answer()
 
 
@@ -94,12 +127,13 @@ async def check_subscription(call: CallbackQuery):
 
     kb = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="🌐 RO‘YXATDAN O‘TISH", url=url)]
+            [InlineKeyboardButton(text="📝 RO‘YXATDAN O‘TISH", url=url)]
         ]
     )
 
     await call.message.answer(
-        "✅ Obuna tasdiqlandi.\n\nEndi ro‘yxatdan o‘ting 👇",
+        "✅ Zo‘r! Endi navbat ro‘yxatdan o‘tishga.\n\n"
+        "Quyidagi tugma orqali ma’lumotlaringizni kiritib, o‘yin ishtirokchisiga aylaning 👇",
         reply_markup=kb,
     )
     await call.answer()
