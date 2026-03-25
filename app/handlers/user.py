@@ -7,22 +7,28 @@ from app.keyboards.user import phone_keyboard, main_menu
 router = Router()
 
 GUIDE_TEXT = """
-🎉 Tabriklaymiz!
+🎉 <b>Tabriklaymiz!</b>
 
-Siz “aloofest” mega konkursida muvaffaqiyatli ro‘yxatdan o‘tdingiz va boshlang‘ich ball qo‘lga kiritdingiz. ✅
+Siz <b>ALOOFEST 2-MAVSUM</b> random sovg‘ali o‘yinlarida muvaffaqiyatli ro‘yxatdan o‘tdingiz va boshlang‘ich ballarni qo‘lga kiritdingiz. ✅
 
-📌 Endi keyingi bosqich juda muhim:
-quyidagi qisqa yo‘riqnoma orqali konkursda qanday qatnashish, ball yig‘ish va g‘olib bo‘lish tartibini ko‘rib chiqing.
+📌 <b>Endi keyingi bosqich juda muhim:</b>  
+quyidagi qisqa yo‘riqnoma orqali konkursda qanday qatnashish, qanday ball yig‘ish va random o‘yinlarida qanday ishtirok etishni bilib oling.
 
-🎯 Sizda 2 xil imkoniyat bor:
-• Haftalik random o‘yinlarida sovg‘a yutish
-• Do‘st taklif qilib ehtimolni oshirish
+🎯 <b>Sizning asosiy imkoniyatingiz:</b>
+• har hafta random o‘yinida qatnashish  
+• do‘stlaringizni taklif qilish orqali ball yig‘ish  
+• promokod orqali qo‘shimcha ustunlikka ega bo‘lish
 
-📹 Qisqa yo‘riqnoma:
-• konkursda qanday ishtirok etish
-• do‘st taklif qilib ball yig‘ish
-• haftalik random o‘yinida qatnashish
-• promokod orqali +15 ball olish
+📹 <b>Qisqa yo‘riqnoma:</b>
+• do‘stlarni taklif qiling  
+• har bir taklif uchun +5 ball oling  
+• do‘kondan promokod olib +15 ball qo‘lga kiriting  
+• shu hafta ichida 25 ball to‘plab random ishtirokchisiga aylaning  
+• chorshanba kuni soat 14:00 dagi jonli efirni kuzating
+
+🏬 <b>Muhim eslatma:</b>
+Promokodlar har hafta yangilanadi.  
+Demak, yangi haftada yana faol bo‘lish, yangi promokod olish va yangi ball yig‘ish sizning g‘oliblik imkoniyatingizni oshiradi.
 
 👥 Endi do‘stlaringizni taklif qiling, ko‘proq ball yig‘ing va “aloo”dan qimmatbaho sovg‘alarni yutib oling!
 
@@ -40,7 +46,7 @@ async def open_main_menu(call: CallbackQuery):
 
     if not user["phone_verified"]:
         await call.message.answer(
-            f"📱 {user['full_name']}, endi telefon raqamingizni ulashing.",
+            f"📱 <b>{user['full_name']}</b>, ro‘yxatdan o‘tish jarayonini yakunlash uchun telefon raqamingizni ulashing.",
             reply_markup=phone_keyboard()
         )
         await call.answer("Raqamni ulashing")
@@ -61,7 +67,7 @@ async def save_contact(message: Message):
 
     await message.answer(
         f"🎉 <b>Tabriklaymiz, {user['full_name']}!</b>\n\n"
-        f"Telefon raqamingiz muvaffaqiyatli qabul qilindi.",
+        f"Telefon raqamingiz muvaffaqiyatli qabul qilindi va siz endi o‘yin menyularidan to‘liq foydalanishingiz mumkin.",
         reply_markup=main_menu()
     )
 
