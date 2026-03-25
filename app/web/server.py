@@ -2,11 +2,13 @@ import html
 import json
 import hmac
 import hashlib
+import traceback
 from aiohttp import web
 
 from app.config import PORT, BOT_URL, WEBAPP_SECRET
 from app.database.db import db
 from app.database.models import DISTRICTS
+from app.keyboards.user import after_registration_keyboard
 
 
 def sign_uid(uid: int) -> str:
@@ -54,10 +56,7 @@ body {{
   justify-content: center;
   padding: 24px;
 }}
-.wrapper {{
-  width: 100%;
-  max-width: 580px;
-}}
+.wrapper {{ width: 100%; max-width: 580px; }}
 .card {{
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.10);
@@ -76,15 +75,8 @@ body {{
   font-size: 13px;
   margin-bottom: 14px;
 }}
-h1 {{
-  margin: 0 0 8px;
-  font-size: 28px;
-}}
-p.subtitle {{
-  margin: 0 0 20px;
-  color: #cbd5e1;
-  line-height: 1.6;
-}}
+h1 {{ margin: 0 0 8px; font-size: 28px; }}
+p.subtitle {{ margin: 0 0 20px; color: #cbd5e1; line-height: 1.6; }}
 label {{
   display: block;
   margin-top: 14px;
@@ -103,12 +95,8 @@ input, select {{
   font-size: 15px;
   outline: none;
 }}
-input::placeholder {{
-  color: #94a3b8;
-}}
-option {{
-  color: black;
-}}
+input::placeholder {{ color: #94a3b8; }}
+option {{ color: black; }}
 button {{
   width: 100%;
   margin-top: 22px;
@@ -148,13 +136,8 @@ button {{
   background: rgba(255,255,255,.05);
   border: 1px solid rgba(255,255,255,.08);
 }}
-.promo-box {{
-  display: none;
-}}
-.back-wrap {{
-  display: none;
-  margin-top: 14px;
-}}
+.promo-box {{ display: none; }}
+.back-wrap {{ display: none; margin-top: 14px; }}
 .back-btn {{
   display: block;
   width: 100%;
@@ -166,12 +149,6 @@ button {{
   color: white;
   border: 1px solid rgba(255,255,255,.12);
 }}
-.note {{
-  margin-top: 14px;
-  color: #cbd5e1;
-  font-size: 13px;
-  line-height: 1.5;
-}}
 </style>
 </head>
 <body>
@@ -180,8 +157,8 @@ button {{
     <div class="badge">🎉 ALOOFEST 2-MAVSUM</div>
     <h1>Ro‘yxatdan o‘tish</h1>
     <p class="subtitle">
-      Ism-familiyangizni va yashash hududingizni kiriting. Agar sizga aloo do‘konidan
-      promokod berilgan bo‘lsa, uni kiritsangiz <b>+15 ball</b> olasiz.
+      Ma’lumotlaringizni to‘ldiring va random sovg‘ali o‘yinlar ishtirokchisiga aylaning.
+      Agar sizda promokod bo‘lsa, uni kiritib <b>+15 ball</b> olishingiz mumkin.
     </p>
 
     <form id="regForm">
@@ -207,13 +184,8 @@ button {{
       </div>
 
       <div class="promo-box" id="promoBox">
-        <label>Promokod yozing va +15 ball oling</label>
+        <label>Promokod yozing</label>
         <input id="promo_code" maxlength="4" placeholder="4 xonali kod">
-      </div>
-
-      <div class="note">
-        Promokod har hafta yangilanadi. Eng yaqin <b>aloo</b> do‘koniga kelib yangi promokod olib,
-        o‘yindagi ehtimolingizni oshirishingiz mumkin.
       </div>
 
       <button type="submit">RO‘YXATDAN O‘TISH</button>
@@ -222,7 +194,7 @@ button {{
     <div id="msg"></div>
 
     <div class="back-wrap" id="backWrap">
-      <a class="back-btn" id="backBtn" href="{back_url}">⬅️ ORQAGA QAYTISH</a>
+      <a class="back-btn" href="{back_url}">⬅️ ORQAGA QAYTISH</a>
     </div>
   </div>
 </div>
@@ -231,6 +203,7 @@ button {{
 const districts = {districts_json};
 const uid = {user_id};
 const sig = "{sig}";
+
 const regionEl = document.getElementById("region");
 const districtEl = document.getElementById("district");
 const msgBox = document.getElementById("msg");
@@ -255,6 +228,7 @@ hasPromo.addEventListener("change", () => {{
 
 document.getElementById("regForm").addEventListener("submit", async (e) => {{
   e.preventDefault();
+
   msgBox.className = "";
   msgBox.style.display = "none";
   backWrap.style.display = "none";
@@ -276,6 +250,7 @@ document.getElementById("regForm").addEventListener("submit", async (e) => {{
       }},
       body: JSON.stringify(payload)
     }});
+
     const data = await res.json();
 
     if (data.ok) {{
@@ -300,10 +275,6 @@ document.getElementById("regForm").addEventListener("submit", async (e) => {{
 </html>"""
 
 
-async def send_bot_message(bot, user_id: int, text: str, reply_markup=None):
-    await bot.send_message(user_id, text, reply_markup=reply_markup)
-
-
 async def register_page(request: web.Request):
     uid = request.query.get("uid", "").strip()
     sig = request.query.get("sig", "").strip()
@@ -318,73 +289,51 @@ async def register_page(request: web.Request):
 
 
 async def register_api(request: web.Request):
-    bot = request.app["bot"]
+    try:
+        data = await request.json()
 
-    data = await request.json()
+        uid = int(data.get("uid", 0))
+        sig = data.get("sig", "").strip()
+        full_name = str(data.get("full_name", "")).strip()
+        region = str(data.get("region", "")).strip()
+        district = str(data.get("district", "")).strip()
+        promo_code = str(data.get("promo_code", "")).strip()
 
-    uid = int(data.get("uid", 0))
-    sig = data.get("sig", "").strip()
-    full_name = str(data.get("full_name", "")).strip()
-    region = str(data.get("region", "")).strip()
-    district = str(data.get("district", "")).strip()
-    promo_code = str(data.get("promo_code", "")).strip()
+        if not verify_uid(uid, sig):
+            return web.json_response({"ok": False, "error": "Ruxsat yo‘q"})
 
-    if not verify_uid(uid, sig):
-        return web.json_response({"ok": False, "error": "Ruxsat yo‘q"})
+        if not full_name:
+            return web.json_response({"ok": False, "error": "Ism-familiya kiritilishi shart"})
 
-    if not full_name:
-        return web.json_response({"ok": False, "error": "Ism-familiya kiritilishi shart"})
+        if region not in DISTRICTS:
+            return web.json_response({"ok": False, "error": "Viloyat noto‘g‘ri"})
 
-    if region not in DISTRICTS:
-        return web.json_response({"ok": False, "error": "Viloyat noto‘g‘ri"})
+        if district not in DISTRICTS[region]:
+            return web.json_response({"ok": False, "error": "Tuman/shahar noto‘g‘ri"})
 
-    if district not in DISTRICTS[region]:
-        return web.json_response({"ok": False, "error": "Tuman/shahar noto‘g‘ri"})
+        if promo_code and (not promo_code.isdigit() or len(promo_code) != 4):
+            return web.json_response({"ok": False, "error": "Promokod 4 xonali son bo‘lishi kerak"})
 
-    if promo_code and (not promo_code.isdigit() or len(promo_code) != 4):
-        return web.json_response({"ok": False, "error": "Promokod 4 xonali son bo‘lishi kerak"})
-
-    user = await db.get_user(uid)
-    if not user:
-        return web.json_response({"ok": False, "error": "Avval botda /start bosing"})
-
-    ok, rid, promo_branch = await db.register_user(
-        user_id=uid,
-        full_name=full_name,
-        region=region,
-        district=district,
-        promo_code=promo_code or None,
-    )
-
-    if not ok:
-        return web.json_response({"ok": False, "error": rid})
-
-    promo_text = ""
-    if promo_branch:
-        promo_text = (
-            f"\n🎁 Promokod qabul qilindi va sizga <b>+15 ball</b> berildi."
-            f"\n🏬 Filial: <b>{html.escape(promo_branch)}</b>"
+        ok, rid, promo_branch = await db.register_user(
+            user_id=uid,
+            full_name=full_name,
+            region=region,
+            district=district,
+            promo_code=promo_code or None,
         )
 
-    reply_markup = after_registration_keyboard()
+        if not ok:
+            return web.json_response({"ok": False, "error": rid})
 
-    await send_bot_message(
-        bot,
-        uid,
-        f"🎉 <b>Tabriklaymiz, {html.escape(full_name)}!</b>\n\n"
-        f"Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz.\n"
-        f"🆔 Sizning ID raqamingiz: <b>{rid}</b>"
-        f"{promo_text}\n\n"
-        f"Endi telefon raqamingizni ulashib, keyingi bosqichga o‘ting.",
-        reply_markup=reply_markup,
-    )
+        return web.json_response({
+            "ok": True,
+            "message": f"🎉 Tabriklaymiz! Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz. Sizning ID: {rid}"
+        })
 
-    message = f"🎉 Tabriklaymiz! Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz. {rid}."
-    if promo_branch:
-        message += " Promokod qabul qilindi va +15 ball berildi."
-    message += " Endi ORQAGA QAYTISH tugmasini bosib botga qayting."
-
-    return web.json_response({"ok": True, "message": message})
+    except Exception as e:
+        print("REGISTER_API_ERROR:", str(e))
+        traceback.print_exc()
+        return web.json_response({"ok": False, "error": f"Server xatoligi: {str(e)}"})
 
 
 async def health(request: web.Request):
