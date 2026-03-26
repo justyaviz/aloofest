@@ -23,7 +23,7 @@ async def admin_cmd(message: Message):
     if not is_admin(message.from_user.id):
         await message.answer("⛔ Siz admin emassiz.")
         return
-    await message.answer("🛠 Admin panel", reply_markup=admin_menu())
+    await message.answer("🛠 <b>Admin panel</b>", reply_markup=admin_menu())
 
 
 @router.message(Command("addball"))
@@ -149,7 +149,7 @@ async def users_list(message: Message):
         await message.answer("Mijozlar topilmadi.")
         return
 
-    text = "📋 Mijozlar ro‘yxati:\n\n"
+    text = "📋 <b>Mijozlar ro‘yxati</b>\n\n"
     for u in users:
         text += (
             f"🪪 {u['rid'] or '-'} | "
@@ -166,7 +166,7 @@ async def stats(message: Message):
 
     s = await db.get_stats()
     await message.answer(
-        f"📊 Umumiy statistika\n\n"
+        f"📊 <b>Umumiy statistika</b>\n\n"
         f"👥 Jami foydalanuvchi: {s['total_users']}\n"
         f"✅ Registered: {s['registered']}\n"
         f"⛔ Ban: {s['banned']}\n"
@@ -185,7 +185,7 @@ async def region_stats(message: Message):
         await message.answer("Hududiy statistika topilmadi.")
         return
 
-    text = "🌍 Hududiy statistika\n\n"
+    text = "🌍 <b>Hududiy statistika</b>\n\n"
     for row in rows:
         text += f"{row['region']}: {row['total']} ta | {row['diamonds']} ball\n"
     await message.answer(text)
@@ -201,7 +201,7 @@ async def promo_stats(message: Message):
         await message.answer("PROMO statistika bo‘sh.")
         return
 
-    text = "🎟 PROMO statistika\n\n"
+    text = "🎟 <b>PROMO statistika</b>\n\n"
     for row in rows:
         text += f"{row['promo_branch']} — {row['promo_code']} — {row['total']} ta\n"
     await message.answer(text)
@@ -272,9 +272,25 @@ async def random_admin(message: Message):
     )
 
     await message.answer(
-        f"🏆 Haftalik random g‘olibi\n\n"
+        f"🏆 <b>Haftalik random g‘olibi</b>\n\n"
         f"👤 Ism: {winner_name}\n"
         f"🪪 ID: {winner['rid'] or '-'}\n"
         f"📱 Tel: {masked_phone}\n"
         f"💎 Ball: {winner['diamonds'] or 0}"
     )
+
+
+@router.message(lambda m: m.text == "📢 Reklamalar ro‘yxati")
+async def ads_list(message: Message):
+    if not is_admin(message.from_user.id):
+        return
+
+    ads = await db.get_ads()
+    if not ads:
+        await message.answer("Reklamalar yo‘q.")
+        return
+
+    text = "📢 <b>Reklamalar ro‘yxati</b>\n\n"
+    for ad in ads:
+        text += f"#{ad['id']} — <b>{ad['title']}</b>\n{ad['body']}\n\n"
+    await message.answer(text)
