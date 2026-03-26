@@ -7,7 +7,7 @@ from app.database.db import db
 router = Router()
 
 
-@router.message(lambda m: m.text == "👥 Do‘stlarni taklif qilish")
+@router.message(lambda m: m.text == "👥 Mening shaxsiy linkim")
 async def referral_menu(message: Message):
     user = await db.get_user(message.from_user.id)
     if not user or not user["registered"]:
@@ -18,12 +18,19 @@ async def referral_menu(message: Message):
     link = f"https://t.me/{me.username}?start=ref_{message.from_user.id}"
 
     caption = (
-        "🔥 <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlari</b>\n\n"
-        "Do‘stlaringizni taklif qiling va har bir muvaffaqiyatli taklif uchun <b>+5 ball</b> oling.\n\n"
-        "🏬 Agar eng yaqin <b>aloo</b> do‘koniga borib promokod olsangiz, yana <b>+15 ball</b> qo‘lga kiritasiz.\n\n"
-        "Bu degani, promokod + 2 ta do‘st = randomga juda yaqin imkoniyat.\n\n"
-        "🔗 <b>Sizning shaxsiy linkingiz:</b>\n"
-        f"{link}"
+        "🔥 <b>Diqqat! Haftalik random o‘yinlariga start berilgan!</b>\n\n"
+        "Siz ham qimmatbaho sovg‘alarni yutib olishingiz mumkin! 🎁\n\n"
+        "📌 Ishtirok etish juda oson:\n"
+        "✅ botga kiring\n"
+        "✅ ro‘yxatdan o‘ting\n"
+        "✅ do‘stlaringizni taklif qiling\n"
+        "✅ ball yig‘ing va randomga kiring\n\n"
+        "💎 Har bir taklif qilingan do‘st uchun sizga <b>+5 ball</b> beriladi.\n"
+        "🏬 Eng yaqin <b>aloo</b> do‘konidan promokod olsangiz esa yana <b>+15 ball</b> olasiz.\n\n"
+        "🎯 Bu esa sizning randomga chiqish imkoniyatingizni yanada oshiradi.\n\n"
+        "🚀 <b>Mana mening shaxsiy havolam:</b>\n"
+        f"{link}\n\n"
+        "Ushbu link orqali kirib ishtirok eting va birgalikda sovg‘alarga yaqinlashamiz!"
     )
 
     if REFERRAL_IMAGE_FILE_ID:
