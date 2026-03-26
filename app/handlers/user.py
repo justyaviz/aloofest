@@ -71,3 +71,9 @@ async def save_contact(message: Message):
     )
 
     await message.answer(GUIDE_TEXT, reply_markup=main_menu())
+    
+    from aiogram import F
+
+@router.message(F.photo)
+async def get_photo_id(message):
+    await message.answer(message.photo[-1].file_id)
