@@ -157,7 +157,7 @@ button {{
     <div class="badge">🎉 ALOOFEST 2-MAVSUM</div>
     <h1>Ro‘yxatdan o‘tish</h1>
     <p class="subtitle">
-      Ma’lumotlaringizni to‘ldiring va o‘yin ishtirokchisiga aylaning.
+      Ma’lumotlaringizni to‘ldiring va random sovg‘ali o‘yinlar ishtirokchisiga aylaning.
       Agar sizda promokod bo‘lsa, uni kiritsangiz <b>+15 ball</b> olasiz.
     </p>
 
