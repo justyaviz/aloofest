@@ -9,25 +9,25 @@ from app.keyboards.user import admin_menu
 router = Router()
 
 IGNORE_TEXTS = {
-    "👥 Do‘stlarni taklif qilish",
+    "👥 Mening shaxsiy linkim",
     "🎲 Random holati",
     "💎 Ballarim",
     "🎁 Sovg‘alar",
     "ℹ️ O‘yin haqida",
     "🆘 Yordam",
     "📋 Mijozlar ro‘yxati",
-    "🎲 Random admin",
+    "🎲 Random start",
     "📤 Excel export",
     "📊 Statistika",
     "🌍 Hududiy statistika",
     "🎟 PROMO",
     "⛔ Ban user",
     "✅ Unban user",
-    "💬 Userga xabar yuborish",
     "🔎 User qidirish",
+    "💬 Userga xabar yuborish",
     "📣 Broadcast",
-    "📢 Reklama joylash",
-    "📢 Reklamalar ro‘yxati",
+    "➕ Ball qo‘shish",
+    "👥 Referal qo‘shish",
     "📱 Raqamni ulashish",
 }
 
@@ -63,6 +63,9 @@ async def reply_dynamic(message: Message):
 @router.message()
 async def support_fallback(message: Message):
     if message.contact:
+        return
+
+    if message.photo or message.voice or message.video:
         return
 
     if not message.text:
