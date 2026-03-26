@@ -9,28 +9,25 @@ router = Router()
 GUIDE_TEXT = """
 🎉 <b>Tabriklaymiz!</b>
 
-Siz <b>ALOOFEST 2-MAVSUM</b> random sovg‘ali o‘yinlarida muvaffaqiyatli ro‘yxatdan o‘tdingiz va boshlang‘ich ballarni qo‘lga kiritdingiz. ✅
+Siz <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlari</b>da muvaffaqiyatli ro‘yxatdan o‘tdingiz va boshlang‘ich ballarni qo‘lga kiritdingiz. ✅
 
-📌 <b>Endi keyingi bosqich juda muhim:</b>  
-quyidagi qisqa yo‘riqnoma orqali konkursda qanday qatnashish, qanday ball yig‘ish va random o‘yinlarida qanday ishtirok etishni bilib oling.
+📌 Endi keyingi bosqich juda muhim:
+quyidagi qisqa yo‘riqnoma orqali o‘yinda qanday qatnashish, ballarni qanday yig‘ish va randomga qanday kirishni bilib oling.
 
-🎯 <b>Sizning asosiy imkoniyatingiz:</b>
+🎯 <b>Sizning imkoniyatingiz:</b>
 • har hafta random o‘yinida qatnashish  
-• do‘stlaringizni taklif qilish orqali ball yig‘ish  
+• do‘st taklif qilib ball yig‘ish  
 • promokod orqali qo‘shimcha ustunlikka ega bo‘lish
 
-📹 <b>Qisqa yo‘riqnoma:</b>
-• do‘stlarni taklif qiling  
-• har bir taklif uchun +5 ball oling  
-• do‘kondan promokod olib +15 ball qo‘lga kiriting  
-• shu hafta ichida 25 ball to‘plab random ishtirokchisiga aylaning  
-• chorshanba kuni soat 14:00 dagi jonli efirni kuzating
+💎 <b>Ball tizimi:</b>
+• ro‘yxatdan o‘tish — +5 ball  
+• har 1 do‘st taklif qilish — +5 ball  
+• promokod — +15 ball
 
-🏬 <b>Muhim eslatma:</b>
-Promokodlar har hafta yangilanadi.  
-Demak, yangi haftada yana faol bo‘lish, yangi promokod olish va yangi ball yig‘ish sizning g‘oliblik imkoniyatingizni oshiradi.
+🏬 <b>Muhim:</b>
+Agar ballaringizni tezroq oshirmoqchi bo‘lsangiz, eng yaqin <b>aloo</b> do‘koniga borib promokod oling.
 
-👥 Endi do‘stlaringizni taklif qiling, ko‘proq ball yig‘ing va “aloo”dan qimmatbaho sovg‘alarni yutib oling!
+📅 Random o‘yinlari har hafta <b>chorshanba kuni soat 14:00</b> da bo‘lib o‘tadi.
 
 👇 Quyidagi menyular orqali davom eting
 """
@@ -39,6 +36,7 @@ Demak, yangi haftada yana faol bo‘lish, yangi promokod olish va yangi ball yig
 @router.callback_query(F.data == "open_main_menu")
 async def open_main_menu(call: CallbackQuery):
     user = await db.get_user(call.from_user.id)
+
     if not user or not user["registered"]:
         await call.message.answer("Avval ro‘yxatdan o‘ting.")
         await call.answer()
@@ -59,6 +57,7 @@ async def open_main_menu(call: CallbackQuery):
 @router.message(F.contact)
 async def save_contact(message: Message):
     user = await db.get_user(message.from_user.id)
+
     if not user or not user["registered"]:
         await message.answer("Avval ro‘yxatdan o‘ting.")
         return
@@ -67,7 +66,7 @@ async def save_contact(message: Message):
 
     await message.answer(
         f"🎉 <b>Tabriklaymiz, {user['full_name']}!</b>\n\n"
-        f"Telefon raqamingiz muvaffaqiyatli qabul qilindi va siz endi o‘yin menyularidan to‘liq foydalanishingiz mumkin.",
+        f"Telefon raqamingiz muvaffaqiyatli qabul qilindi. Endi siz o‘yin menyularidan to‘liq foydalanishingiz mumkin.",
         reply_markup=main_menu()
     )
 
