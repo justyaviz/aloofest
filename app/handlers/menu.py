@@ -25,9 +25,15 @@ async def random_status(message: Message):
         return
 
     upcoming = next_wednesday_14()
-    status = "✅ Siz hozirgi random haftasida qatnashish uchun tayyorsiz." if (user["diamonds"] or 0) >= 25 else "❌ Hozircha siz random ro‘yxatiga kirmagansiz. 25 ball yig‘ing."
+    points = user["diamonds"] or 0
+    refs = user["referral_count"] or 0
 
-    remaining = max(0, 25 - (user["diamonds"] or 0))
+    if points >= 25:
+        status = "✅ Siz ushbu haftalik random o‘yinida qatnashish uchun tayyorsiz."
+    else:
+        status = "❌ Hozircha siz random ro‘yxatiga kirmagansiz."
+
+    remaining = max(0, 25 - points)
 
     last = await db.get_last_random()
     last_text = ""
@@ -42,12 +48,13 @@ async def random_status(message: Message):
         )
 
     await message.answer(
-        f"🎲 <b>Random holati</b>\n\n"
+        f"🎲 <b>Haftalik random holati</b>\n\n"
         f"📅 Keyingi efir: <b>{upcoming.strftime('%d-%m-%Y %H:%M')}</b>\n"
-        f"📌 Holatingiz: {status}\n"
-        f"💎 Ballaringiz: <b>{user['diamonds']}</b>\n"
-        f"👥 Takliflaringiz: <b>{user['referral_count']}</b>\n"
-        f"➕ Randomga chiqish uchun yana kerak: <b>{remaining}</b> ball"
+        f"📌 Holatingiz: {status}\n\n"
+        f"💎 Ballaringiz: <b>{points}</b>\n"
+        f"👥 Takliflaringiz: <b>{refs}</b>\n"
+        f"➕ Randomga chiqish uchun yana kerak: <b>{remaining}</b> ball\n\n"
+        f"🏬 Eng yaqin <b>aloo</b> do‘koniga borib promokod olsangiz, sizga +15 ball qo‘shiladi."
         f"{last_text}"
     )
 
@@ -57,12 +64,16 @@ async def my_points(message: Message):
     user = await db.get_user(message.from_user.id)
     if not user:
         return
+
     await message.answer(
         f"💎 <b>Sizning ballaringiz</b>\n\n"
         f"🆔 ID: <b>{user['rid'] or '-'}</b>\n"
         f"💎 Ballar: <b>{user['diamonds']}</b>\n"
         f"👥 Takliflar: <b>{user['referral_count']}</b>\n\n"
-        f"Agar ballaringizni tezroq oshirmoqchi bo‘lsangiz, do‘stlaringizni taklif qiling yoki eng yaqin <b>aloo</b> do‘konidan promokod oling."
+        f"Ballarni oshirish yo‘llari:\n"
+        f"• do‘st taklif qilish\n"
+        f"• promokod kiritish\n"
+        f"• yangi haftada yana faol qatnashish"
     )
 
 
@@ -76,7 +87,7 @@ async def prizes(message: Message):
         "⌚ Smartwatch\n"
         "🎧 AirPods\n"
         "🎁 va boshqa qimmatbaho sovg‘alar\n\n"
-        "Har hafta yangi random, yangi imkoniyat va yangi g‘oliblar!"
+        "Har hafta yangi random, yangi g‘olib va yangi imkoniyat!"
     )
 
 
@@ -87,6 +98,6 @@ async def about(message: Message):
         "Bu mavsum faqat <b>random sovg‘ali o‘yinlar</b> formatida o‘tkaziladi.\n\n"
         "📅 Random efirlari har hafta chorshanba kuni soat 14:00 da bo‘ladi.\n"
         "💎 Ishtirok etish uchun shu hafta ichida 25 ball yig‘ishingiz kerak.\n"
-        "🏬 Promokod esa sizga +15 ball beradi.\n\n"
-        "Shuning uchun do‘stlaringizni taklif qiling va imkoniyatingizni oshiring."
+        "🏬 Promokod sizga +15 ball beradi.\n\n"
+        "Qancha faol bo‘lsangiz, yutish ehtimolingiz shuncha yuqori bo‘ladi."
     )
