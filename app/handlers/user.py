@@ -11,8 +11,8 @@ GUIDE_TEXT = """
 
 Siz <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlari</b>da muvaffaqiyatli ro‘yxatdan o‘tdingiz va boshlang‘ich ballarni qo‘lga kiritdingiz. ✅
 
-📌 Endi keyingi bosqich juda muhim:
-quyidagi qisqa yo‘riqnoma orqali o‘yinda qanday qatnashish, ballarni qanday yig‘ish va randomga qanday kirishni bilib oling.
+📌 <b>Endi keyingi bosqich juda muhim:</b>
+quyidagi qisqa yo‘riqnoma orqali o‘yinda qanday qatnashish, qanday ball yig‘ish va randomga qanday kirishni bilib oling.
 
 🎯 <b>Sizning imkoniyatingiz:</b>
 • har hafta random o‘yinida qatnashish  
@@ -25,7 +25,7 @@ quyidagi qisqa yo‘riqnoma orqali o‘yinda qanday qatnashish, ballarni qanday 
 • promokod — +15 ball
 
 🏬 <b>Muhim:</b>
-Agar ballaringizni tezroq oshirmoqchi bo‘lsangiz, eng yaqin <b>aloo</b> do‘koniga borib promokod oling.
+Agar ballaringizni tezroq oshirmoqchi bo‘lsangiz, eng yaqin <b>aloo</b> do‘koniga borib promokod olishingiz mumkin.
 
 📅 Random o‘yinlari har hafta <b>chorshanba kuni soat 14:00</b> da bo‘lib o‘tadi.
 
