@@ -157,8 +157,8 @@ button {{
     <div class="badge">🎉 ALOOFEST 2-MAVSUM</div>
     <h1>Ro‘yxatdan o‘tish</h1>
     <p class="subtitle">
-      Ma’lumotlaringizni to‘ldiring va random sovg‘ali o‘yinlar ishtirokchisiga aylaning.
-      Agar sizda promokod bo‘lsa, uni kiritib <b>+15 ball</b> olishingiz mumkin.
+      Ma’lumotlaringizni to‘ldiring va o‘yin ishtirokchisiga aylaning.
+      Agar sizda promokod bo‘lsa, uni kiritsangiz <b>+15 ball</b> olasiz.
     </p>
 
     <form id="regForm">
@@ -290,6 +290,7 @@ async def register_page(request: web.Request):
 
 async def register_api(request: web.Request):
     try:
+        bot = request.app["bot"]
         data = await request.json()
 
         uid = int(data.get("uid", 0))
@@ -325,9 +326,30 @@ async def register_api(request: web.Request):
         if not ok:
             return web.json_response({"ok": False, "error": rid})
 
+        promo_text = ""
+        web_text = ""
+        if promo_branch:
+            promo_text = (
+                f"\n🎁 Promokod qabul qilindi va sizga <b>+15 ball</b> berildi."
+                f"\n🏬 Filial: <b>{html.escape(promo_branch)}</b>"
+            )
+            web_text = " Promokod qabul qilindi va +15 ball berildi."
+
+        await bot.send_message(
+            chat_id=uid,
+            text=(
+                f"🎉 <b>Tabriklaymiz, {html.escape(full_name)}!</b>\n\n"
+                f"Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz va <b>+5 ball</b> qo‘lga kiritdingiz."
+                f"{promo_text}\n\n"
+                f"💎 Agar ballaringizni ko‘paytirmoqchi bo‘lsangiz, eng yaqin <b>aloo</b> do‘koniga borib promokod olishingiz mumkin.\n\n"
+                f"🆔 Sizning ID raqamingiz: <b>{rid}</b>"
+            ),
+            reply_markup=after_registration_keyboard().model_dump()
+        )
+
         return web.json_response({
             "ok": True,
-            "message": f"🎉 Tabriklaymiz! Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz. Sizning ID: {rid}"
+            "message": f"🎉 Tabriklaymiz! Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz. Sizning ID: {rid}.{web_text}"
         })
 
     except Exception as e:
