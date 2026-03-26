@@ -19,11 +19,11 @@ async def referral_menu(message: Message):
 
     caption = (
         "🔥 <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlari</b>\n\n"
-        "Do‘stlaringizni taklif qiling va sovg‘alarga yaqinlashing.\n\n"
-        "💎 Har 1 do‘st = +5 ball\n"
-        "🏬 Do‘kondan promokod = +15 ball\n\n"
-        "Promokod olsangiz, yana 2 ta do‘st taklif qilib randomga kirishingiz mumkin.\n\n"
-        f"🔗 Sizning shaxsiy linkingiz:\n{link}"
+        "Do‘stlaringizni taklif qiling va har bir muvaffaqiyatli taklif uchun <b>+5 ball</b> oling.\n\n"
+        "🏬 Agar eng yaqin <b>aloo</b> do‘koniga borib promokod olsangiz, yana <b>+15 ball</b> qo‘lga kiritasiz.\n\n"
+        "Bu degani, promokod + 2 ta do‘st = randomga juda yaqin imkoniyat.\n\n"
+        "🔗 <b>Sizning shaxsiy linkingiz:</b>\n"
+        f"{link}"
     )
 
     if REFERRAL_IMAGE_FILE_ID:
