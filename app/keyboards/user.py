@@ -17,7 +17,7 @@ def start_keyboard() -> InlineKeyboardMarkup:
 def rules_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="📋 O‘yin shartlari", callback_data="show_rules")]
+            [InlineKeyboardButton(text="📋 O‘yin qoidalari", callback_data="show_rules")]
         ]
     )
 
@@ -25,7 +25,7 @@ def rules_keyboard() -> InlineKeyboardMarkup:
 def subscribe_keyboard(channel_username: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="📢 Telegram kanal", url=f"https://t.me/{channel_username}")],
+            [InlineKeyboardButton(text="📢 Kanalga obuna bo‘lish", url=f"https://t.me/{channel_username}")],
             [InlineKeyboardButton(text="✅ Tekshirish", callback_data="check_subscription")],
         ]
     )
@@ -70,7 +70,7 @@ def admin_menu() -> ReplyKeyboardMarkup:
             [KeyboardButton(text="⛔ Ban user"), KeyboardButton(text="✅ Unban user")],
             [KeyboardButton(text="💬 Userga xabar yuborish"), KeyboardButton(text="🔎 User qidirish")],
             [KeyboardButton(text="📣 Broadcast"), KeyboardButton(text="📢 Reklama joylash")],
-            [KeyboardButton(text="📢 Reklamalar ro‘yxati"), KeyboardButton(text="🎁 Sovg‘alarni o‘zgartirish")],
+            [KeyboardButton(text="📢 Reklamalar ro‘yxati")],
         ],
         resize_keyboard=True
     )
