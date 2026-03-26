@@ -52,7 +52,7 @@ def phone_keyboard() -> ReplyKeyboardMarkup:
 def main_menu() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="👥 Do‘stlarni taklif qilish")],
+            [KeyboardButton(text="👥 Mening shaxsiy linkim")],
             [KeyboardButton(text="🎲 Random holati"), KeyboardButton(text="💎 Ballarim")],
             [KeyboardButton(text="🎁 Sovg‘alar"), KeyboardButton(text="ℹ️ O‘yin haqida")],
             [KeyboardButton(text="🆘 Yordam")],
@@ -64,13 +64,13 @@ def main_menu() -> ReplyKeyboardMarkup:
 def admin_menu() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="📋 Mijozlar ro‘yxati"), KeyboardButton(text="🎲 Random admin")],
-            [KeyboardButton(text="📤 Excel export"), KeyboardButton(text="📊 Statistika")],
-            [KeyboardButton(text="🌍 Hududiy statistika"), KeyboardButton(text="🎟 PROMO")],
+            [KeyboardButton(text="🎲 Random start")],
+            [KeyboardButton(text="📋 Mijozlar ro‘yxati"), KeyboardButton(text="📊 Statistika")],
+            [KeyboardButton(text="➕ Ball qo‘shish"), KeyboardButton(text="👥 Referal qo‘shish")],
             [KeyboardButton(text="⛔ Ban user"), KeyboardButton(text="✅ Unban user")],
-            [KeyboardButton(text="💬 Userga xabar yuborish"), KeyboardButton(text="🔎 User qidirish")],
-            [KeyboardButton(text="📣 Broadcast"), KeyboardButton(text="📢 Reklama joylash")],
-            [KeyboardButton(text="📢 Reklamalar ro‘yxati")],
+            [KeyboardButton(text="🔎 User qidirish"), KeyboardButton(text="💬 Userga xabar yuborish")],
+            [KeyboardButton(text="📣 Broadcast"), KeyboardButton(text="📤 Excel export")],
+            [KeyboardButton(text="🌍 Hududiy statistika"), KeyboardButton(text="🎟 PROMO")],
         ],
         resize_keyboard=True
     )
