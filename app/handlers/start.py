@@ -14,27 +14,27 @@ router = Router()
 START_TEXT = """
 🎉 <b>ALOOFEST 2-MAVSUM RANDOM sovg‘ali o‘yinlariga xush kelibsiz!</b>
 
-“aloo” sizlar uchun navbatdagi qiziqarli va yutuqlarga boy mavsumni boshlab berdi!  
-Bu safar o‘yin formati yanada sodda, yanada qiziqarli va yanada foydaliroq bo‘ladi. 🔥
+“aloo” siz uchun navbatdagi qiziqarli va sovg‘alarga boy mavsumni boshlab berdi.  
+Bu safar o‘yin yanada sodda, yanada faol va yanada foydali bo‘ladi. 🔥
 
-🎁 <b>Bu mavsumdagi asosiy sovg‘alar:</b>
+🎁 <b>Asosiy sovg‘alar:</b>
 📱 Telefon  
 📟 Planshet  
 🫖 Elektr choynak  
 ⌚ Smartwatch  
 🎧 AirPods  
-va boshqa ko‘plab qimmatbaho sovg‘alar
+va boshqa qimmatbaho sovg‘alar
 
-📅 <b>Random o‘yinlari har hafta chorshanba kuni soat 14:00 da</b> jonli efir orqali o‘tkaziladi.
+📅 <b>Random o‘yinlari har hafta chorshanba kuni soat 14:00 da</b> jonli efirda o‘tkaziladi.
 
-💙 Sizning vazifangiz juda oddiy:
+💙 Ishtirok etish juda oson:
 — kanalga obuna bo‘ling  
 — ro‘yxatdan o‘ting  
 — do‘stlaringizni taklif qiling  
 — ball yig‘ing  
 — random ishtirokchisiga aylaning
 
-🚀 Tayyormisiz? Unda hoziroq boshlaymiz!
+🚀 Tayyor bo‘lsangiz, boshlaymiz!
 """
 
 RULES_TEXT = """
@@ -51,18 +51,14 @@ Demak, siz har hafta yangi imkoniyat bilan sovg‘a yutishingiz mumkin. 🎲
 🏬 <b>Promokod haqida:</b>
 Agar siz eng yaqin <b>aloo</b> do‘koniga borib promokod olsangiz, botga kiritganingizdan keyin sizga darhol <b>+15 ball</b> qo‘shiladi.
 
-Bu degani:
-agar promokod ishlatsangiz, yana atigi <b>2 ta do‘st</b> taklif qilib random o‘yinida qatnashish imkoniyatiga ega bo‘lasiz.
+Shunda yana atigi <b>2 ta do‘st</b> taklif qilsangiz, random o‘yinida qatnashish imkoniyatiga juda yaqinlashasiz.
 
 ✅ <b>Randomda qatnashish uchun:</b>
-Siz tanlangan haftada jami <b>25 ball yoki undan ko‘p</b> to‘plashingiz kerak.
+Tanlangan haftada jami <b>25 ball yoki undan ko‘p</b> to‘plashingiz kerak.
 
 📅 <b>Muhim:</b>
 Random har hafta alohida hisoblanadi.  
-Masalan, bir haftada qatnashgan bo‘lsangiz, keyingi haftada yana qaytadan faol bo‘lishingiz kerak bo‘ladi.
-
-🎁 <b>Sovg‘alar:</b>
-Bu mavsumda siz telefon, planshet, smartwatch, AirPods, elektr choynak va boshqa ko‘plab sovg‘alarni yutishingiz mumkin.
+Yangi haftada yana faol bo‘lish sizning g‘oliblik imkoniyatingizni oshiradi.
 
 👇 Endi keyingi bosqichga o‘tish uchun kanalga obuna bo‘ling va tekshirish tugmasini bosing.
 """
@@ -94,7 +90,7 @@ async def start_cmd(message: Message):
     if user and user["registered"]:
         await message.answer(
             "🎉 Siz allaqachon ro‘yxatdan o‘tgansiz.\n\n"
-            "Endi menyudan foydalanib o‘yindagi holatingizni kuzatishingiz mumkin."
+            "Endi menyu orqali o‘yindagi holatingizni kuzatishingiz mumkin."
         )
         return
 
@@ -132,8 +128,8 @@ async def check_subscription(call: CallbackQuery):
     )
 
     await call.message.answer(
-        "✅ Zo‘r! Endi navbat ro‘yxatdan o‘tishga.\n\n"
-        "Quyidagi tugma orqali ma’lumotlaringizni kiritib, o‘yin ishtirokchisiga aylaning 👇",
+        "✅ Zo‘r! Endi ro‘yxatdan o‘tish bosqichiga o‘tamiz.\n\n"
+        "Quyidagi tugma orqali ma’lumotlaringizni kiriting va o‘yin ishtirokchisiga aylaning 👇",
         reply_markup=kb,
     )
     await call.answer()
